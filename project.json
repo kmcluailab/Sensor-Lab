@@ -1,0 +1,39 @@
+{
+  "project": {
+    "name": "Sensor Lab - AI Lab (KMCLU)",
+    "description": "A responsive web-based learning module that illustrates sensor-based experimentation using the Scientech 2311 platform, integrated with AI-based control and analysis.",
+    "version": "1.0.0",
+    "author": {
+      "name": "Akash Gupta",
+      "github": "https://github.com/saysky2",
+      "linkedin": "https://www.linkedin.com/in/saysky2"
+    },
+    "files": [
+      "index.html",
+      "sensor-lan01.jpg",
+      "sensor-lan02.jpg",
+      "README.md"
+    ],
+    "features": [
+      "Interactive UI with toggleable sections",
+      "Sensor components: Light, Temperature, Motion",
+      "Working principle and data processing explained",
+      "AI use cases and future enhancements",
+      "Detailed lab experiments",
+      "Fully responsive design with animations"
+    ],
+    "technologies": [
+      "HTML5",
+      "CSS3",
+      "JavaScript"
+    ],
+    "hosting": {
+      "recommended": [
+        "GitHub Pages",
+        "Netlify",
+        "Vercel"
+      ]
+    },
+    "license": "MIT"
+  }
+}

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sensor Lab - AI Lab (KMCLU)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      animation: slideInDown 1s ease;
+    }
+
+    main {
+      padding: 2em;
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      margin: 20px auto;
+      border: 4px solid #ddd;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-top: 30px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin: 10px 0;
+      transition: all 0.3s ease;
+    }
+
+    li:hover {
+      background: #eaf2f8;
+      padding-left: 5px;
+    }
+
+    .toggle {
+      cursor: pointer;
+      color: #007bff;
+      text-decoration: underline;
+      margin: 15px 0;
+      display: inline-block;
+    }
+
+    .content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease-out;
+    }
+
+    .content.open {
+      max-height: 1000px;
+      transition: max-height 0.9s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+  <script>
+    function toggleSection(id) {
+      const section = document.getElementById(id);
+      section.classList.toggle('open');
+    }
+  </script>
+</head>
+<body>
+
+<header>
+  <h1>Sensor Lab - AI Lab (KMCLU)</h1>
+  <p>Scientech 2311 | Real-Time Sensor Experimentation Platform</p>
+</header>
+
+<main>
+
+  
+  <img src="./img/Sensor-lan02.jpg" alt="Sensor Lab Setup Image 2">
+
+  <section>
+    <h2>Introduction</h2>
+    <p>The Sensor Lab at AI Lab (KMCLU) is an advanced setup designed to provide practical insights into sensor-based experimentation using AI-integrated modules. Powered by the Scientech 2311 platform, it facilitates the understanding of light, temperature, motion sensors, and their interaction with microcontroller units for AI-driven automation and analysis.</p>
+  </section>
+
+  <section>
+    <h2>Components Overview</h2>
+    <ul>
+      <li><strong>Light Sensors:</strong> Photo Voltaic Cell, Photo Diode, Photo Transistor, LDR</li>
+      <li><strong>Temperature Sensors:</strong> Thermocouples, RTDs, Thermistors</li>
+      <li><strong>Motion Sensors:</strong> Accelerometers, Gyroscopes</li>
+      <li><strong>Interface Components:</strong> DAC/ADC, Digital Output, Current Amplifier</li>
+      <li><strong>Microcontroller Connectivity:</strong> Signal conditioning, Pulse-width modulation (PWM), and data feedback systems</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="toggle" onclick="toggleSection('working')">Working Principle (Click to Expand)</h2>
+    <div class="content" id="working">
+      <p>The Sensor Lab operates on a feedback-based model integrated with AI algorithms. Here's how:</p>
+      <ul>
+        <li><strong>Data Collection:</strong> Sensors continuously capture environmental parameters.</li>
+        <li><strong>AI Processing:</strong> Data is passed through embedded systems or connected software for real-time interpretation.</li>
+        <li><strong>Control Feedback:</strong> AI provides decisions based on thresholds, allowing adjustments such as triggering outputs, changing voltage levels, etc.</li>
+        <li><strong>Visualization:</strong> Real-time circuit diagrams and responses can be visualized via an onboard display or computer interface.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="toggle" onclick="toggleSection('experiments')">Detailed Experiments (Click to Expand)</h2>
+    <div class="content" id="experiments">
+      <ul>
+        <li><strong>Experiment 1:</strong> Analyze light intensity using LDR, compare voltage across light exposure levels.</li>
+        <li><strong>Experiment 2:</strong> Use a photodiode to measure light wavelength effects on voltage output.</li>
+        <li><strong>Experiment 3:</strong> Setup a temperature sensing loop using RTD and observe real-time digital output control.</li>
+        <li><strong>Experiment 4:</strong> Create a feedback control system using a photo transistor and measure delay in signal conversion.</li>
+        <li><strong>Experiment 5:</strong> Test multi-sensor AI applications: combine light and temperature data to automate fan/light control.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Applications in AI Labs</h2>
+    <ul>
+      <li>Industrial automation via sensor feedback loops</li>
+      <li>AI modeling of environmental conditions using sensor data</li>
+      <li>Smart home systems using LDR and thermal sensors</li>
+      <li>Predictive analytics in environmental science labs</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Benefits of Sensor Lab</h2>
+    <ul>
+      <li>Hands-on learning with real sensors and controllers</li>
+      <li>Visual demonstration with real-time LEDs and outputs</li>
+      <li>Conceptual understanding of signal amplification, filtering, and digitization</li>
+      <li>Ability to integrate AI for prediction and automation tasks</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Future Scope</h2>
+    <ul>
+      <li>Integration with IoT for wireless data logging</li>
+      <li>Edge AI modules for on-device predictions</li>
+      <li>Scalability for cross-domain research (agriculture, healthcare, robotics)</li>
+      <li>Simulated virtual sensors through software environments for hybrid learning</li>
+    </ul>
+  </section>
+
+</main>
+
+</body>
+</html>
