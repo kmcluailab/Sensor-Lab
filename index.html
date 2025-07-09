@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sensor Lab - AI Lab (KMCLU)</title>
+  <title>Sensor Lab - KMCLU</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -17,8 +17,34 @@
       background: #2c3e50;
       color: white;
       padding: 20px;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
       animation: slideInDown 1s ease;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      height: 70px;
+      margin-right: 15px;
+    }
+
+    .university-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .university-name {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .lab-title {
+      font-size: 1em;
     }
 
     main {
@@ -29,7 +55,7 @@
       animation: fadeIn 1.5s ease-in;
     }
 
-    img {
+    img.lab-img {
       max-width: 100%;
       display: block;
       margin: 20px auto;
@@ -72,7 +98,7 @@
     }
 
     .content.open {
-      max-height: 1000px;
+      max-height: 500px;
       transition: max-height 0.9s ease-in;
     }
 
@@ -85,6 +111,17 @@
       from { transform: translateY(-100%); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .logo-container img {
+        height: 50px;
+      }
+    }
   </style>
   <script>
     function toggleSection(id) {
@@ -96,84 +133,84 @@
 <body>
 
 <header>
-  <h1>Sensor Lab - AI Lab (KMCLU)</h1>
-  <p>Scientech 2311 | Real-Time Sensor Experimentation Platform</p>
+  <div class="logo-container">
+    <img src="./img/Khwaja_Moinuddin_Chishti_Language_University_logo.png" alt="University Logo">
+    <div class="university-info">
+      <div class="university-name" style="text-align: center;">Sensor Lab</div>
+      <div class=" "style="text-align: center;">Scientech 2311 | Real-Time Sensor Experimentation Platform</div>
+      <div class="lab-title" style="text-align: center;">Khwaja Moinuddin Chishti Language University</div>
+    </div>
+  </div>
 </header>
 
 <main>
 
-  
-  <img src="./img/Sensor-lan02.jpg" alt="Sensor Lab Setup Image 2">
+ <!-- <img src="sensor-lan01.jpg" alt="Sensor Lab Setup Image 1" class="lab-img"> -->
+  <img src="./img/Sensor-lan02.jpg" alt="Sensor Lab Setup Image 2" class="lab-img">
 
   <section>
     <h2>Introduction</h2>
-    <p>The Sensor Lab at AI Lab (KMCLU) is an advanced setup designed to provide practical insights into sensor-based experimentation using AI-integrated modules. Powered by the Scientech 2311 platform, it facilitates the understanding of light, temperature, motion sensors, and their interaction with microcontroller units for AI-driven automation and analysis.</p>
+    <p>This Sensor Lab platform enables students and researchers to conduct real-time AI-integrated sensor experiments. It’s designed around Scientech’s modular equipment to measure and interpret physical parameters like light, temperature, and motion.</p>
   </section>
 
   <section>
-    <h2>Components Overview</h2>
+    <h2>Components</h2>
     <ul>
-      <li><strong>Light Sensors:</strong> Photo Voltaic Cell, Photo Diode, Photo Transistor, LDR</li>
-      <li><strong>Temperature Sensors:</strong> Thermocouples, RTDs, Thermistors</li>
-      <li><strong>Motion Sensors:</strong> Accelerometers, Gyroscopes</li>
-      <li><strong>Interface Components:</strong> DAC/ADC, Digital Output, Current Amplifier</li>
-      <li><strong>Microcontroller Connectivity:</strong> Signal conditioning, Pulse-width modulation (PWM), and data feedback systems</li>
+      <li>Light Sensors: LDR, Photodiode, Phototransistor</li>
+      <li>Temperature Sensors: RTD, Thermocouple</li>
+      <li>Motion Sensors: Accelerometer, Gyroscope</li>
+      <li>Signal Conditioning: Op-Amps, Amplifiers</li>
+      <li>Data Interface: DAC, ADC, Digital Output</li>
     </ul>
   </section>
 
   <section>
     <h2 class="toggle" onclick="toggleSection('working')">Working Principle (Click to Expand)</h2>
     <div class="content" id="working">
-      <p>The Sensor Lab operates on a feedback-based model integrated with AI algorithms. Here's how:</p>
       <ul>
-        <li><strong>Data Collection:</strong> Sensors continuously capture environmental parameters.</li>
-        <li><strong>AI Processing:</strong> Data is passed through embedded systems or connected software for real-time interpretation.</li>
-        <li><strong>Control Feedback:</strong> AI provides decisions based on thresholds, allowing adjustments such as triggering outputs, changing voltage levels, etc.</li>
-        <li><strong>Visualization:</strong> Real-time circuit diagrams and responses can be visualized via an onboard display or computer interface.</li>
+        <li><strong>Data Collection:</strong> Sensors gather real-world data in real time.</li>
+        <li><strong>AI Processing:</strong> Embedded algorithms analyze input data.</li>
+        <li><strong>Feedback Loop:</strong> Adjustments are made based on AI insights for automation.</li>
       </ul>
     </div>
   </section>
 
   <section>
-    <h2 class="toggle" onclick="toggleSection('experiments')">Detailed Experiments (Click to Expand)</h2>
+    <h2 class="toggle" onclick="toggleSection('experiments')">Lab Experiments (Click to Expand)</h2>
     <div class="content" id="experiments">
       <ul>
-        <li><strong>Experiment 1:</strong> Analyze light intensity using LDR, compare voltage across light exposure levels.</li>
-        <li><strong>Experiment 2:</strong> Use a photodiode to measure light wavelength effects on voltage output.</li>
-        <li><strong>Experiment 3:</strong> Setup a temperature sensing loop using RTD and observe real-time digital output control.</li>
-        <li><strong>Experiment 4:</strong> Create a feedback control system using a photo transistor and measure delay in signal conversion.</li>
-        <li><strong>Experiment 5:</strong> Test multi-sensor AI applications: combine light and temperature data to automate fan/light control.</li>
+        <li>Experiment 1: Temperature control using thermocouple</li>
+        <li>Experiment 2: LDR-based light detection and response system</li>
+        <li>Experiment 3: Photodiode linearity and characteristics</li>
+        <li>Experiment 4: Pressure or vibration monitoring with AI feedback</li>
       </ul>
     </div>
   </section>
 
   <section>
-    <h2>Applications in AI Labs</h2>
+    <h2>Applications</h2>
     <ul>
-      <li>Industrial automation via sensor feedback loops</li>
-      <li>AI modeling of environmental conditions using sensor data</li>
-      <li>Smart home systems using LDR and thermal sensors</li>
-      <li>Predictive analytics in environmental science labs</li>
+      <li>Temperature control in chemical reactions</li>
+      <li>Light-sensitive automation for smart devices</li>
+      <li>Predictive AI modeling in experimental setups</li>
     </ul>
   </section>
 
   <section>
-    <h2>Benefits of Sensor Lab</h2>
+    <h2>Benefits</h2>
     <ul>
-      <li>Hands-on learning with real sensors and controllers</li>
-      <li>Visual demonstration with real-time LEDs and outputs</li>
-      <li>Conceptual understanding of signal amplification, filtering, and digitization</li>
-      <li>Ability to integrate AI for prediction and automation tasks</li>
+      <li>Improved accuracy in data acquisition</li>
+      <li>AI-driven decision making and predictive analysis</li>
+      <li>Modular learning: Sensor theory + practical implementation</li>
     </ul>
   </section>
 
   <section>
     <h2>Future Scope</h2>
     <ul>
-      <li>Integration with IoT for wireless data logging</li>
-      <li>Edge AI modules for on-device predictions</li>
-      <li>Scalability for cross-domain research (agriculture, healthcare, robotics)</li>
-      <li>Simulated virtual sensors through software environments for hybrid learning</li>
+      <li>Integration with IoT devices and cloud data logging</li>
+      <li>Advanced AI models for anomaly detection</li>
+      <li>Cross-domain applications in healthcare, robotics, and environmental sensing</li>
     </ul>
   </section>
 
