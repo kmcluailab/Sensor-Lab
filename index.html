@@ -1,21 +1,67 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sensor Lab </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sensor Lab</title>
   <link rel="icon" type="image/png" href="./img/Khwaja_Moinuddin_Chishti_Language_University_logo.png" />
   <style>
+    :root {
+      --bg-color: #f4f4f9;
+      --text-color: #333;
+      --header-bg: #283593;
+      --main-bg: #ffffff;
+      --border-color: #ddd;
+      --hover-bg: #f0f4ff;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #1a1a1a;
+      --text-color: #e0e0e0;
+      --header-bg: #1e1e2e;
+      --main-bg: #2d2d2d;
+      --border-color: #444;
+      --hover-bg: #3a3a3a;
+      --shadow: rgba(255, 255, 255, 0.1);
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f4f4f9;
+      background: var(--bg-color);
       margin: 0;
       padding: 0;
-      color: #333;
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .theme-toggle, .lang-select {
+      background: var(--main-bg);
+      color: var(--text-color);
+      border: 2px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover, .lang-select:hover {
+      background: var(--hover-bg);
     }
 
     header {
-      background: #283593;
+      background: var(--header-bg);
       color: white;
       padding: 20px;
       animation: slideInDown 1s ease;
@@ -57,25 +103,33 @@
     }
 
     main {
-      padding: 2em;
       max-width: 1200px;
       margin: auto;
-      background: white;
+      padding: 2em;
+      background: var(--main-bg);
       animation: fadeIn 1.5s ease-in;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px var(--shadow);
     }
 
     img {
       max-width: 100%;
       display: block;
       margin: 20px auto;
-      border: 4px solid #ddd;
+      border: 4px solid var(--border-color);
       border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px var(--shadow);
+      animation: fadeInImage 2s ease-in-out;
     }
 
     h2 {
-      color: #283593;
-      margin-top: 30px;
+      color: #1a237e;
+      margin-top: 40px;
+    }
+
+    [data-theme="dark"] h2 {
+      color: #7986cb;
     }
 
     ul {
@@ -84,31 +138,38 @@
 
     li {
       margin: 10px 0;
-      transition: all 0.3s ease;
+      transition: background-color 0.3s ease;
     }
 
     li:hover {
-      background: #eaf2f8;
+      background-color: var(--hover-bg);
       padding-left: 5px;
     }
 
-    .toggle {
-      cursor: pointer;
-      color: #007bff;
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--header-bg);
+      color: white;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #7986cb;
+      text-decoration: none;
+    }
+
+    footer a:hover {
       text-decoration: underline;
-      margin: 15px 0;
-      display: inline-block;
     }
 
-    .content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.6s ease-out;
+    .lang-hidden {
+      display: none;
     }
 
-    .content.open {
-      max-height: 1000px;
-      transition: max-height 0.9s ease-in;
+    @keyframes fadeInImage {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     @keyframes fadeIn {
@@ -120,117 +181,291 @@
       from { transform: translateY(-100%); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
-
-    @media (max-width: 600px) {
-      .logo-left {
-        position: static;
-        text-align: center;
-        margin-bottom: 10px;
-      }
-
-      .header-text {
-        padding-top: 0;
-      }
-    }
   </style>
   <script>
-    function toggleSection(id) {
-      const section = document.getElementById(id);
-      section.classList.toggle('open');
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      const button = document.querySelector('.theme-toggle');
+      button.textContent = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
     }
+
+    function changeLanguage(lang) {
+      // Hide all language elements
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        el.classList.add('lang-hidden');
+      });
+      
+      // Show selected language elements
+      document.querySelectorAll(`[data-lang="${lang}"]`).forEach(el => {
+        el.classList.remove('lang-hidden');
+      });
+      
+      // Update document language
+      document.documentElement.lang = lang;
+      localStorage.setItem('language', lang);
+    }
+
+    // Initialize theme and language on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const savedLang = localStorage.getItem('language') || 'en';
+      
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      const themeButton = document.querySelector('.theme-toggle');
+      themeButton.textContent = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+      
+      changeLanguage(savedLang);
+      document.querySelector('.lang-select').value = savedLang;
+    });
   </script>
 </head>
 <body>
 
+<div class="controls">
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+  <select class="lang-select" onchange="changeLanguage(this.value)">
+    <option value="en">English</option>
+    <option value="hi">हिंदी</option>
+    <option value="ur">اردو</option>
+  </select>
+</div>
+
 <header>
   <div class="header-container">
     <div class="logo-left">
-      <img src="./img/Khwaja_Moinuddin_Chishti_Language_University_logo.png" alt="KMCLU Logo" />
+      <img src="./img/Khwaja_Moinuddin_Chishti_Language_University_logo.png" alt="University Logo">
     </div>
     <div class="header-text">
-      <h1>Sensor Lab</h1>
-      <p>Scientech 2311 | Real-Time Sensor Experimentation Platform</p>
+      <h1 data-lang="en">Sensor Lab</h1>
+      <h1 data-lang="hi" class="lang-hidden">सेंसर लैब</h1>
+      <h1 data-lang="ur" class="lang-hidden">سینسر لیب</h1>
+      
+      <p data-lang="en">Khwaja Moinuddin Chishti Language University, Lucknow</p>
+      <p data-lang="hi" class="lang-hidden">ख्वाजा मोइनुद्दीन चिश्ती भाषा विश्वविद्यालय, लखनऊ</p>
+      <p data-lang="ur" class="lang-hidden">خواجہ معین الدین چشتی لینگویج یونیورسٹی، لکھنؤ</p>
     </div>
   </div>
 </header>
 
 <main>
+  
 
-  <img src="./img/Sensor-lan02.jpg" alt="Sensor Lab Setup Image 2">
+ <section>
+  <h2 data-lang="en">Introduction</h2>
+  <h2 data-lang="hi" class="lang-hidden">परिचय</h2>
+  <h2 data-lang="ur" class="lang-hidden">تعارف</h2>
 
-  <section>
-    <h2>Introduction</h2>
-    <p>The Sensor Lab at AI Lab (KMCLU) is an advanced setup designed to provide practical insights into sensor-based experimentation using AI-integrated modules. Powered by the Scientech 2311 platform, it facilitates the understanding of light, temperature, motion sensors, and their interaction with microcontroller units for AI-driven automation and analysis.</p>
-  </section>
+  <p data-lang="en">The Sensor Lab at AI Lab (KMCLU) is an advanced setup designed to provide practical insights into sensor-based experimentation using AI-integrated modules. Powered by the Scientech 2311 platform, it facilitates the understanding of light, temperature, motion sensors, and their interaction with microcontroller units for AI-driven automation and analysis.</p>
+  <p data-lang="hi" class="lang-hidden">एआई लैब (केएमसीएलयू) में सेंसर लैब एक उन्नत सेटअप है जो एआई-एकीकृत मॉड्यूल का उपयोग करके सेंसर-आधारित प्रयोगों में व्यावहारिक अंतर्दृष्टि प्रदान करता है। यह Scientech 2311 प्लेटफॉर्म द्वारा संचालित है और प्रकाश, तापमान, गति सेंसर और उनके माइक्रोकंट्रोलर इकाइयों के साथ इंटरैक्शन को समझने में मदद करता है।</p>
+  <p data-lang="ur" class="lang-hidden">اے آئی لیب (KMCLU) میں سینسر لیب ایک جدید سیٹ اپ ہے جو AI انٹیگریٹڈ ماڈیولز کے ذریعے سینسر پر مبنی تجربات میں عملی بصیرت فراہم کرتا ہے۔ یہ Scientech 2311 پلیٹ فارم پر مبنی ہے اور روشنی، درجہ حرارت، اور موشن سینسرز کے ساتھ مائیکروکنٹرولر یونٹس کی تعامل کو سمجھنے میں مدد دیتا ہے۔</p>
+</section>
 
-  <section>
-    <h2>Components Overview</h2>
-    <ul>
-      <li><strong>Light Sensors:</strong> Photo Voltaic Cell, Photo Diode, Photo Transistor, LDR</li>
-      <li><strong>Temperature Sensors:</strong> Thermocouples, RTDs, Thermistors</li>
-      <li><strong>Motion Sensors:</strong> Accelerometers, Gyroscopes</li>
-      <li><strong>Interface Components:</strong> DAC/ADC, Digital Output, Current Amplifier</li>
-      <li><strong>Microcontroller Connectivity:</strong> Signal conditioning, Pulse-width modulation (PWM), and data feedback systems</li>
+<section>
+  <h2 data-lang="en">Components Overview</h2>
+  <h2 data-lang="hi" class="lang-hidden">घटक अवलोकन</h2>
+  <h2 data-lang="ur" class="lang-hidden">اجزاء کا جائزہ</h2>
+
+  <ul data-lang="en">
+    <li><strong>Light Sensors:</strong> Photo Voltaic Cell, Photo Diode, Photo Transistor, LDR</li>
+    <li><strong>Temperature Sensors:</strong> Thermocouples, RTDs, Thermistors</li>
+    <li><strong>Motion Sensors:</strong> Accelerometers, Gyroscopes</li>
+    <li><strong>Interface Components:</strong> DAC/ADC, Digital Output, Current Amplifier</li>
+    <li><strong>Microcontroller Connectivity:</strong> Signal conditioning, Pulse-width modulation (PWM), and data feedback systems</li>
+  </ul>
+
+  <ul data-lang="hi" class="lang-hidden">
+    <li><strong>प्रकाश सेंसर:</strong> फोटो वोल्टाइक सेल, फोटो डायोड, फोटो ट्रांजिस्टर, एलडीआर</li>
+    <li><strong>तापमान सेंसर:</strong> थर्मोकपल, आरटीडी, थर्मिस्टर</li>
+    <li><strong>मोशन सेंसर:</strong> एक्सेलेरोमीटर, जाइरोस्कोप</li>
+    <li><strong>इंटरफेस घटक:</strong> DAC/ADC, डिजिटल आउटपुट, करंट एम्प्लीफायर</li>
+    <li><strong>माइक्रोकंट्रोलर कनेक्टिविटी:</strong> सिग्नल कंडीशनिंग, PWM और डेटा फीडबैक सिस्टम</li>
+  </ul>
+
+  <ul data-lang="ur" class="lang-hidden">
+    <li><strong>لائٹ سینسرز:</strong> فوٹو وولٹائک سیل، فوٹو ڈایوڈ، فوٹو ٹرانزسٹر، ایل ڈی آر</li>
+    <li><strong>درجہ حرارت سینسرز:</strong> تھرموکپلز، RTDs، تھرمسٹرز</li>
+    <li><strong>موشن سینسرز:</strong> ایکسیلرومیٹر، جائروسکوپ</li>
+    <li><strong>انٹرفیس اجزاء:</strong> DAC/ADC، ڈیجیٹل آؤٹ پٹ، کرنٹ ایمپلی فائر</li>
+    <li><strong>مائیکروکنٹرولر کنیکٹیویٹی:</strong> سگنل کنڈیشننگ، PWM، اور ڈیٹا فیڈ بیک سسٹمز</li>
+  </ul>
+</section>
+
+<section>
+  <h2 data-lang="en" class="toggle" onclick="toggleSection('working')">Working Principle (Click to Expand)</h2>
+  <h2 data-lang="hi" class="toggle lang-hidden" onclick="toggleSection('working')">कार्य सिद्धांत (क्लिक करें)</h2>
+  <h2 data-lang="ur" class="toggle lang-hidden" onclick="toggleSection('working')">کام کرنے کا اصول (کلک کریں)</h2>
+
+  <div class="content" id="working">
+    <p data-lang="en">The Sensor Lab operates on a feedback-based model integrated with AI algorithms. Here's how:</p>
+    <p data-lang="hi" class="lang-hidden">सेंसर लैब एआई एल्गोरिदम के साथ एक फीडबैक-आधारित मॉडल पर काम करता है। यह इस प्रकार काम करता है:</p>
+    <p data-lang="ur" class="lang-hidden">سینسر لیب AI الگوردمز کے ساتھ فیڈبیک پر مبنی ماڈل پر کام کرتا ہے۔ طریقہ کار یہ ہے:</p>
+
+    <ul data-lang="en">
+      <li><strong>Data Collection:</strong> Sensors continuously capture environmental parameters.</li>
+      <li><strong>AI Processing:</strong> Data is passed through embedded systems or connected software for real-time interpretation.</li>
+      <li><strong>Control Feedback:</strong> AI provides decisions based on thresholds, allowing adjustments such as triggering outputs, changing voltage levels, etc.</li>
+      <li><strong>Visualization:</strong> Real-time circuit diagrams and responses can be visualized via an onboard display or computer interface.</li>
     </ul>
-  </section>
 
-  <section>
-    <h2 class="toggle" onclick="toggleSection('working')">Working Principle (Click to Expand)</h2>
-    <div class="content" id="working">
-      <p>The Sensor Lab operates on a feedback-based model integrated with AI algorithms. Here's how:</p>
-      <ul>
-        <li><strong>Data Collection:</strong> Sensors continuously capture environmental parameters.</li>
-        <li><strong>AI Processing:</strong> Data is passed through embedded systems or connected software for real-time interpretation.</li>
-        <li><strong>Control Feedback:</strong> AI provides decisions based on thresholds, allowing adjustments such as triggering outputs, changing voltage levels, etc.</li>
-        <li><strong>Visualization:</strong> Real-time circuit diagrams and responses can be visualized via an onboard display or computer interface.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <h2 class="toggle" onclick="toggleSection('experiments')">Detailed Experiments (Click to Expand)</h2>
-    <div class="content" id="experiments">
-      <ul>
-        <li><strong>Experiment 1:</strong> Analyze light intensity using LDR, compare voltage across light exposure levels.</li>
-        <li><strong>Experiment 2:</strong> Use a photodiode to measure light wavelength effects on voltage output.</li>
-        <li><strong>Experiment 3:</strong> Setup a temperature sensing loop using RTD and observe real-time digital output control.</li>
-        <li><strong>Experiment 4:</strong> Create a feedback control system using a photo transistor and measure delay in signal conversion.</li>
-        <li><strong>Experiment 5:</strong> Test multi-sensor AI applications: combine light and temperature data to automate fan/light control.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <h2>Applications in AI Labs</h2>
-    <ul>
-      <li>Industrial automation via sensor feedback loops</li>
-      <li>AI modeling of environmental conditions using sensor data</li>
-      <li>Smart home systems using LDR and thermal sensors</li>
-      <li>Predictive analytics in environmental science labs</li>
+    <ul data-lang="hi" class="lang-hidden">
+      <li><strong>डेटा संग्रह:</strong> सेंसर लगातार पर्यावरणीय मापदंडों को कैप्चर करते हैं।</li>
+      <li><strong>एआई प्रोसेसिंग:</strong> डेटा एम्बेडेड सिस्टम या सॉफ़्टवेयर के माध्यम से रीयल-टाइम विश्लेषण के लिए भेजा जाता है।</li>
+      <li><strong>नियंत्रण फीडबैक:</strong> एआई थ्रेशोल्ड के आधार पर निर्णय देता है जैसे आउटपुट ट्रिगर करना या वोल्टेज को समायोजित करना।</li>
+      <li><strong>विज़ुअलाइज़ेशन:</strong> रीयल-टाइम सर्किट डायग्राम और प्रतिक्रियाएं ऑनबोर्ड डिस्प्ले या कंप्यूटर के माध्यम से देखी जा सकती हैं।</li>
     </ul>
-  </section>
 
-  <section>
-    <h2>Benefits of Sensor Lab</h2>
-    <ul>
-      <li>Hands-on learning with real sensors and controllers</li>
-      <li>Visual demonstration with real-time LEDs and outputs</li>
-      <li>Conceptual understanding of signal amplification, filtering, and digitization</li>
-      <li>Ability to integrate AI for prediction and automation tasks</li>
+    <ul data-lang="ur" class="lang-hidden">
+      <li><strong>ڈیٹا کلیکشن:</strong> سینسرز ماحولیاتی پیرامیٹرز کو مسلسل ریکارڈ کرتے ہیں۔</li>
+      <li><strong>AI پراسیسنگ:</strong> ڈیٹا ایمبیڈڈ سسٹمز یا سافٹ ویئر کے ذریعے ریئل ٹائم تجزیہ کے لیے منتقل ہوتا ہے۔</li>
+      <li><strong>کنٹرول فیڈبیک:</strong> AI تھریشولڈ کی بنیاد پر فیصلے کرتا ہے جیسے آؤٹ پٹ ٹرگر کرنا، وولٹیج تبدیل کرنا وغیرہ۔</li>
+      <li><strong>ویژولائزیشن:</strong> ریئل ٹائم سرکٹ ڈایاگرامز اور ردعمل کو آن بورڈ ڈسپلے یا کمپیوٹر پر دیکھا جا سکتا ہے۔</li>
     </ul>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <h2>Future Scope</h2>
-    <ul>
-      <li>Integration with IoT for wireless data logging</li>
-      <li>Edge AI modules for on-device predictions</li>
-      <li>Scalability for cross-domain research (agriculture, healthcare, robotics)</li>
-      <li>Simulated virtual sensors through software environments for hybrid learning</li>
+<section>
+  <h2 data-lang="en" class="toggle" onclick="toggleSection('experiments')">Detailed Experiments (Click to Expand)</h2>
+  <h2 data-lang="hi" class="toggle lang-hidden" onclick="toggleSection('experiments')">विस्तृत प्रयोग (क्लिक करें)</h2>
+  <h2 data-lang="ur" class="toggle lang-hidden" onclick="toggleSection('experiments')">تفصیلی تجربات (کلک کریں)</h2>
+
+  <div class="content" id="experiments">
+    <ul data-lang="en">
+      <li><strong>Experiment 1:</strong> Analyze light intensity using LDR, compare voltage across light exposure levels.</li>
+      <li><strong>Experiment 2:</strong> Use a photodiode to measure light wavelength effects on voltage output.</li>
+      <li><strong>Experiment 3:</strong> Setup a temperature sensing loop using RTD and observe real-time digital output control.</li>
+      <li><strong>Experiment 4:</strong> Create a feedback control system using a photo transistor and measure delay in signal conversion.</li>
+      <li><strong>Experiment 5:</strong> Test multi-sensor AI applications: combine light and temperature data to automate fan/light control.</li>
     </ul>
-  </section>
+
+    <ul data-lang="hi" class="lang-hidden">
+      <li><strong>प्रयोग 1:</strong> LDR का उपयोग करके प्रकाश तीव्रता का विश्लेषण करें, विभिन्न प्रकाश स्तरों पर वोल्टेज की तुलना करें।</li>
+      <li><strong>प्रयोग 2:</strong> फोटो डायोड का उपयोग करके प्रकाश की तरंग दैर्ध्य का वोल्टेज आउटपुट पर प्रभाव मापें।</li>
+      <li><strong>प्रयोग 3:</strong> RTD का उपयोग करके तापमान मापने का एक लूप सेटअप करें और रीयल-टाइम डिजिटल आउटपुट नियंत्रण का अवलोकन करें।</li>
+      <li><strong>प्रयोग 4:</strong> फोटो ट्रांजिस्टर के माध्यम से एक फीडबैक कंट्रोल सिस्टम बनाएं और सिग्नल कन्वर्जन में देरी को मापें।</li>
+      <li><strong>प्रयोग 5:</strong> बहु-सेंसर एआई एप्लिकेशन का परीक्षण करें: लाइट और तापमान डेटा को मिलाकर फैन/लाइट नियंत्रण को स्वचालित करें।</li>
+    </ul>
+
+    <ul data-lang="ur" class="lang-hidden">
+      <li><strong>تجربہ 1:</strong> LDR کے ذریعے روشنی کی شدت کا تجزیہ کریں، اور مختلف روشنی کی سطحوں پر وولٹیج کا موازنہ کریں۔</li>
+      <li><strong>تجربہ 2:</strong> فوٹو ڈایوڈ سے روشنی کی طول موج کے وولٹیج پر اثرات کی پیمائش کریں۔</li>
+      <li><strong>تجربہ 3:</strong> RTD کا استعمال کرتے ہوئے ایک درجہ حرارت سینسنگ لوپ سیٹ کریں اور رئیل ٹائم ڈیجیٹل آؤٹ پٹ کنٹرول کا مشاہدہ کریں۔</li>
+      <li><strong>تجربہ 4:</strong> فوٹو ٹرانزسٹر کے ساتھ ایک فیڈبیک کنٹرول سسٹم بنائیں اور سگنل کنورژن میں تاخیر کی پیمائش کریں۔</li>
+      <li><strong>تجربہ 5:</strong> کثیر سینسر AI ایپلی کیشنز کو ٹیسٹ کریں: روشنی اور درجہ حرارت کے ڈیٹا کو ملا کر پنکھا/لائٹ کنٹرول کو خودکار بنائیں۔</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2 data-lang="en">Applications in AI Labs</h2>
+  <h2 data-lang="hi" class="lang-hidden">एआई प्रयोगशालाओं में अनुप्रयोग</h2>
+  <h2 data-lang="ur" class="lang-hidden">AI لیبز میں اطلاق</h2>
+
+  <ul data-lang="en">
+    <li>Industrial automation via sensor feedback loops</li>
+    <li>AI modeling of environmental conditions using sensor data</li>
+    <li>Smart home systems using LDR and thermal sensors</li>
+    <li>Predictive analytics in environmental science labs</li>
+  </ul>
+
+  <ul data-lang="hi" class="lang-hidden">
+    <li>सेंसर फीडबैक लूप्स के माध्यम से औद्योगिक स्वचालन</li>
+    <li>सेंसर डेटा के साथ पर्यावरणीय स्थितियों की एआई मॉडलिंग</li>
+    <li>LDR और थर्मल सेंसर के साथ स्मार्ट होम सिस्टम</li>
+    <li>पर्यावरण विज्ञान प्रयोगशालाओं में भविष्यवाणी विश्लेषण</li>
+  </ul>
+
+  <ul data-lang="ur" class="lang-hidden">
+    <li>سینسر فیڈبیک لوپس کے ذریعے صنعتی آٹومیشن</li>
+    <li>سینسر ڈیٹا کی مدد سے ماحولیاتی حالات کی AI ماڈلنگ</li>
+    <li>LDR اور تھرمل سینسرز کے ذریعے اسمارٹ ہوم سسٹمز</li>
+    <li>ماحولیاتی سائنس لیبز میں پیش گوئی پر مبنی تجزیہ</li>
+  </ul>
+</section>
+
+<section>
+  <h2 data-lang="en">Benefits of Sensor Lab</h2>
+  <h2 data-lang="hi" class="lang-hidden">सेंसर लैब के लाभ</h2>
+  <h2 data-lang="ur" class="lang-hidden">سینسر لیب کے فوائد</h2>
+
+  <ul data-lang="en">
+    <li>Hands-on learning with real sensors and controllers</li>
+    <li>Visual demonstration with real-time LEDs and outputs</li>
+    <li>Conceptual understanding of signal amplification, filtering, and digitization</li>
+    <li>Ability to integrate AI for prediction and automation tasks</li>
+  </ul>
+
+  <ul data-lang="hi" class="lang-hidden">
+    <li>वास्तविक सेंसर और कंट्रोलर के साथ व्यावहारिक शिक्षा</li>
+    <li>रीयल-टाइम एलईडी और आउटपुट के साथ दृश्य प्रदर्शन</li>
+    <li>सिग्नल प्रवर्धन, फ़िल्टरिंग और डिजिटलीकरण की अवधारणात्मक समझ</li>
+    <li>पूर्वानुमान और स्वचालन कार्यों के लिए एआई एकीकरण की क्षमता</li>
+  </ul>
+
+  <ul data-lang="ur" class="lang-hidden">
+    <li>حقیقی سینسرز اور کنٹرولرز کے ساتھ عملی تربیت</li>
+    <li>ریئل ٹائم ایل ای ڈیز اور آؤٹ پٹس کے ساتھ بصری مظاہرہ</li>
+    <li>سگنل ایمپلی فکیشن، فلٹرنگ، اور ڈیجیٹائزیشن کا تصوراتی فہم</li>
+    <li>AI کو پیش گوئی اور خود کاری کے کاموں میں شامل کرنے کی صلاحیت</li>
+  </ul>
+</section>
+
+<section>
+  <h2 data-lang="en">Future Scope</h2>
+  <h2 data-lang="hi" class="lang-hidden">भविष्य की संभावनाएं</h2>
+  <h2 data-lang="ur" class="lang-hidden">مستقبل کی وسعت</h2>
+
+  <ul data-lang="en">
+    <li>Integration with IoT for wireless data logging</li>
+    <li>Edge AI modules for on-device predictions</li>
+    <li>Scalability for cross-domain research (agriculture, healthcare, robotics)</li>
+    <li>Simulated virtual sensors through software environments for hybrid learning</li>
+  </ul>
+
+  <ul data-lang="hi" class="lang-hidden">
+    <li>वायरलेस डेटा लॉगिंग के लिए IoT के साथ एकीकरण</li>
+    <li>डिवाइस पर भविष्यवाणियों के लिए एज एआई मॉड्यूल</li>
+    <li>विभिन्न क्षेत्रों में अनुसंधान के लिए विस्तारशीलता (कृषि, स्वास्थ्य सेवा, रोबोटिक्स)</li>
+    <li>हाइब्रिड लर्निंग के लिए सॉफ्टवेयर के माध्यम से वर्चुअल सेंसर का अनुकरण</li>
+  </ul>
+
+  <ul data-lang="ur" class="lang-hidden">
+    <li>وائرلیس ڈیٹا لاگنگ کے لیے IoT کے ساتھ انضمام</li>
+    <li>آن ڈیوائس پیش گوئی کے لیے ایج AI ماڈیولز</li>
+    <li>مختلف شعبوں میں تحقیق کے لیے توسیع پذیری (زراعت، صحت، روبوٹکس)</li>
+    <li>ہائبرڈ لرننگ کے لیے سافٹ ویئر ماحول میں ورچوئل سینسرز کی نقل</li>
+  </ul>
+</section>
+
 
 </main>
+
+<footer>
+  <p data-lang="en">
+    Developer: Akash Gupta | 
+    <a href="https://www.linkedin.com/in/saysky2" target="_blank">LinkedIn</a> | 
+    <a href="https://github.com/saysky2" target="_blank">GitHub</a>
+  </p>
+  <p data-lang="en">Under the Supervision of <strong>Dr. Shan E Fatima</strong></p>
+  <p data-lang="hi" class="lang-hidden">
+    डेवलपर: आकाश गुप्ता | 
+    <a href="https://www.linkedin.com/in/saysky2" target="_blank">LinkedIn</a> | 
+    <a href="https://github.com/saysky2" target="_blank">GitHub</a>
+  </p>
+  <p data-lang="hi" class="lang-hidden"><strong>डॉ. शान ई. फातिमा</strong> के पर्यवेक्षण में</p>
+
+  <p data-lang="ur" class="lang-hidden">
+    ڈیولپر: آکاش گپتا | 
+    <a href="https://www.linkedin.com/in/saysky2" target="_blank">LinkedIn</a> | 
+    <a href="https://github.com/saysky2" target="_blank">GitHub</a>
+  </p>
+  <p data-lang="ur" class="lang-hidden"><strong>ڈاکٹر شان ای فاطمہ</strong> کی نگرانی میں</p>
+
+</footer>
 
 </body>
 </html>
